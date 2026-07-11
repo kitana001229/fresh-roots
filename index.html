@@ -16,6 +16,9 @@
         .available { background: #e8f5e9; color: #2e7d32; }
         .sold-out { background: #ffebee; color: #c62828; }
         .sold-out-card { opacity: 0.5; filter: grayscale(1); }
+        .footer { margin-top: 50px; padding: 30px 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; border-top: 4px solid #2e7d32; direction: auto; unicode-bidi: plaintext; }
+        .footer h3 { color: #1b5e20; margin-top: 0; }
+        .footer p { margin: 8px 0; color: #555; }
     </style>
 
     <!-- Load the official Supabase Client SDK -->
@@ -25,6 +28,13 @@
 
     <h1>🌱 Fresh Roots Live Store</h1>
     <div class="grid" id="shop-grid">Loading up fresh stock...</div>
+    <!-- Add contact info -->
+    <div class="footer">
+        <h3>Contact us</h3>
+        <p>Phone: +960 7645592</p>
+        <p>Viber/DM: +960 9473231</p>
+        <p>Location: R.Maakurathu , Maldives</p>
+    </div>
 
     <script>
         // 1. Connect to your brand new Supabase Project (using 'db' as supabase)
