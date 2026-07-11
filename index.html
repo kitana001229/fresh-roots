@@ -108,6 +108,9 @@
                     <img src="${item.image_url || 'https://via.placeholder.com/250'}" alt="${item.name}" onclick="zoomImage('${item.image_url}')">
                     <h3>${item.name}</h3>
                     <p class="price">MVR ${item.price}</p>
+                    <p class="stock" style="font-size: 0.9em; color: #666; margin-top: 4px;">
+                     Available: ${item.quantity ?? 0}
+                    </p>
                     <span class="status ${isSoldOut ? 'sold-out' : 'available'}">${item.status || 'Available'}</span>
                 `;
                 grid.appendChild(card); 
