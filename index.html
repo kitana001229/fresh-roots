@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Roots Store</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #f4f6f4; }
+        h1 { color: #1b5e20; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-3px); }
+        .card img { max-width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
+        .price { font-size: 1.4rem; font-weight: bold; color: #2e7d32; margin: 10px 0; }
+        .status { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .available { background: #e8f5e9; color: #2e7d32; }
+        .sold-out { background: #ffebee; color: #c62828; }
+        .sold-out-card { opacity: 0.5; filter: grayscale(1); }
+    </style>
+
+    <!-- Load the official Supabase Client SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <h1>🌱 Fresh Roots Live Store</h1>
+    <div class="grid" id="shop-grid">Loading up fresh stock...</div>
+
+    <script>
+        // 1. Connect to your brand new Supabase Project
+        const SUPABASE_URL = "https://cgbhpkjozmuuwhhevmj.supabase.co"; 
+        const SUPABASE_ANON_KEY = "PASTE_YOUR_sb_publishable_KEY_HERE";
+        
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 2. Fetch all products from your database initially
+        async function getProducts() {
+            const { data, error } = await supabase.from('products').select('*');
+            if (error) console.error("Error loading products:", error);
+            else renderGrid(data);
+        }
+
+        // 3. Draw the products onto the customer's screen
+        function renderGrid(products) {
+            const grid = document.getElementById('shop-grid');
+            grid.innerHTML = ''; 
+
+            products.forEach(item => {
+                const isSoldOut = item.status?.toLowerCase() === 'sold out' || item.status?.toLowerCase() === 'sold-out';
+                
+                const card = document.createElement('div');
+                card.className = isSoldOut ? 'card sold-out-card' : 'card';
+                
+                card.innerHTML = `
+                    <img src="${item.image_url || 'https://via.placeholder.com/250'}" alt="${item.name}">
+                    <h3>${item.name}</h3>
+                    <p class="price">$${item.price}</p>
+                    <span class="status ${isSoldOut ? 'sold-out' : 'available'}">${item.status || 'Available'}</span>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // 4. THE MAGIC: Listen for live changes to the database table
+        supabase
+            .channel('custom-all-channel')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, (payload) => {
+                console.log('Change detected in database! Refreshing UI...', payload);
+                getProducts(); // Instantly pull the fresh updates
+            })
+            .subscribe();
+
+        // Run the initial load
+        getProducts();
+    </script>
+</body>
+</html>
