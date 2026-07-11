@@ -27,15 +27,15 @@
     <div class="grid" id="shop-grid">Loading up fresh stock...</div>
 
     <script>
-        // 1. Connect to your brand new Supabase Project
-        const SUPABASE_URL = "https://cgbhpkjozmuuwhhevmj.supabase.co"; 
-        const SUPABASE_ANON_KEY = "sb_publishable_CElfmuAcNStSGAL0H4gw-Q_Vm7t8nB3";
+        // 1. Connect to your brand new Supabase Project (using 'db' as supabase)
+        const MY_URL = "https://cgbhpkjozmuuwhhevmj.supabase.co"; 
+        const MY_KEY = "sb_publishable_CElfmuAcNStSGAL0H4gw-Q_Vm7t8nB3";
         
-        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const db = supabase.createClient(MY_URL, MY_KEY);
 
         // 2. Fetch all products from your database initially
         async function getProducts() {
-            const { data, error } = await supabase.from('products').select('*');
+            const { data, error } = await db.from('products').select('*');
             if (error) console.error("Error loading products:", error);
             else renderGrid(data);
         }
@@ -62,7 +62,7 @@
         }
 
         // 4. THE MAGIC: Listen for live changes to the database table
-        supabase
+        db
             .channel('custom-all-channel')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, (payload) => {
                 console.log('Change detected in database! Refreshing UI...', payload);
