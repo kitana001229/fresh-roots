@@ -54,10 +54,10 @@
                 card.innerHTML = `
                     <img src="${item.image_url || 'https://via.placeholder.com/250'}" alt="${item.name}">
                     <h3>${item.name}</h3>
-                    <p class="price">$${item.price}</p>
+                    <p class="price">MVR ${item.price}</p>
                     <span class="status ${isSoldOut ? 'sold-out' : 'available'}">${item.status || 'Available'}</span>
                 `;
-                grid.appendChild(card);
+                grid.appendChild(card); 
             });
         }
 
