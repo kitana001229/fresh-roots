@@ -31,7 +31,7 @@
         const SUPABASE_URL = "https://cgbhpkjozmuuwhhevmj.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_CElfmuAcNStSGAL0H4gw-Q_Vm7t8nB3";
         
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // 2. Fetch all products from your database initially
         async function getProducts() {
