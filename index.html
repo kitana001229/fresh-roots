@@ -105,7 +105,7 @@
                 card.className = isSoldOut ? 'card sold-out-card' : 'card';
                 
                 card.innerHTML = `
-                    <img src="${item.image_url || 'https://via.placeholder.com/250'}" alt="${item.name} onclick="zoomImage('${item.image_url}')">
+                    <img src="${item.image_url || 'https://via.placeholder.com/250'}" alt="${item.name}" onclick="zoomImage('${item.image_url}')">
                     <h3>${item.name}</h3>
                     <p class="price">MVR ${item.price}</p>
                     <span class="status ${isSoldOut ? 'sold-out' : 'available'}">${item.status || 'Available'}</span>
