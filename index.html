@@ -128,7 +128,7 @@
 </head>
 <body>
 
-    <h1>🌱 Fresh Roots Store</h1>
+    <h1>🌿 Fresh Roots Store 🌿</h1>
     <div class="grid" id="shop-grid">Loading up fresh stock...</div>
     <!-- Add contact info -->
     <div class="footer">
@@ -184,7 +184,7 @@
                     <p class="stock" style="font-size: 0.9em; color: #666; margin-top: 4px;">
                      Available: ${item.quantity ?? 0}
                     </p>
-                    <button class="buy-btn" onclick="openOrderModal('${item.name}')">Buy / ގަންނަން</button>
+                    <button class="buy-btn" onclick="openOrderModal('${item.name}')">Buy</button>
                     <span class="status ${isSoldOut ? 'sold-out' : 'available'}">${item.status || 'Available'}</span>
                 `;
                 grid.appendChild(card); 
