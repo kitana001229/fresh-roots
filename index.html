@@ -59,7 +59,68 @@
         .card img:hover {
             transform: scale(1.02);
         }
-        
+                /* Buy Button Style */
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 12px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .buy-btn:hover {
+            background-color: #1b5e20;
+        }
+
+        /* Order Modal Overlay */
+        #order-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10000;
+        }
+        #order-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .order-modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            direction: auto;
+            unicode-bidi: plaintext;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .close-btn:hover { color: #333; }
+        .order-modal hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
+            
     </style>
 
     <!-- Load the official Supabase Client SDK -->
@@ -77,7 +138,20 @@
         <p>Location: Finihiyaa, R.Maakurathu, Maldives</p>
     </div>
     <!-- The full-screen zoom container -->
-<div id="image-overlay" onclick="this.classList.remove('active')"><img id="overlay-img" src="" alt="Zoomed view"></div>
+    <div id="image-overlay" onclick="this.classList.remove('active')"><img id="overlay-img" src="" alt="Zoomed view"></div>
+    <!-- The Order Pop-up Modal -->
+<div id="order-overlay" onclick="closeOrderModal(event)">
+    <div class="order-modal">
+        <span class="close-btn" onclick="document.getElementById('order-overlay').classList.remove('active')">&times;</span>
+        <h2>🛍️ Place Your Order / އޯޑަރު ކުރެއްވުމަށް</h2>
+        <p>To order <strong id="order-item-name">this item</strong>, note the item name and reach out to us via:</p>
+        <hr>
+        <p>📞 <strong>Phone:</strong> +960 7645592</p>
+        <p>💬 <strong>Viber:</strong> +960 9473231</p>
+        <hr>
+    </div>
+</div>
+    
     
     <script>
         // 1. Connect to your brand new Supabase Project (using 'db' as supabase)
@@ -111,6 +185,7 @@
                     <p class="stock" style="font-size: 0.9em; color: #666; margin-top: 4px;">
                      Available: ${item.quantity ?? 0}
                     </p>
+                    <button class="buy-btn" onclick="openOrderModal('${item.name}')">Buy Now / ގަންނަން</button>
                     <span class="status ${isSoldOut ? 'sold-out' : 'available'}">${item.status || 'Available'}</span>
                 `;
                 grid.appendChild(card); 
@@ -135,6 +210,19 @@ function zoomImage(url) {
     overlayImg.src = url;
     overlay.classList.add('active');
 }
+        // Function to open the order pop-up and inject the item name
+function openOrderModal(itemName) {
+    document.getElementById('order-item-name').innerText = itemName;
+    document.getElementById('order-overlay').classList.add('active');
+}
+
+// Function to close modal if clicking the dark background outside the box
+function closeOrderModal(event) {
+    if (event.target.id === 'order-overlay') {
+        document.getElementById('order-overlay').classList.remove('active');
+    }
+}
+        
         
     </script>
 </body>
